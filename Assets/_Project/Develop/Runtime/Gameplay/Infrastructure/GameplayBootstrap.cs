@@ -12,6 +12,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 {
     public class GameplayBootstrap : SceneBootstrap
     {
+        //TODO: after AIBrainsContext
         private DIContainer _container;
         private GameplayInputArgs _inputArgs;
 

@@ -46,7 +46,5 @@ namespace Assets._Project.Develop.Runtime.Utilities.Conditions
 
             return result;
         }
-
-
     }
 }

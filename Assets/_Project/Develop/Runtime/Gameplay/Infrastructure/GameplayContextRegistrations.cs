@@ -8,6 +8,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 {
     public class GameplayContextRegistrations
     {
+        //TODO after DesktopInput, AIBrainsContext, BrainsFactory
         public static void Process(DIContainer container, GameplayInputArgs args)
         {
             container.RegisterAsSingle(CreateEntitiesFactory);
