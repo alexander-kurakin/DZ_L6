@@ -73,6 +73,27 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
 
             return brain;
         }
+        
+        public StateMachineBrain CreateSimpleTeleporterBrain(Entity entity)
+        {
+            AIStateMachine stateMachine = CreateContinuousEventStateMachine(entity);
+            StateMachineBrain brain = new StateMachineBrain(stateMachine);
+            
+            _brainsContext.SetFor(entity, brain);
+            
+            return brain;
+        }
+
+        private AIStateMachine CreateContinuousEventStateMachine(Entity entity)
+        {
+            ContinuousEventSpamState continuousEventSpamState = new ContinuousEventSpamState(entity.StartTeleportationRequest, 3f);
+
+            AIStateMachine stateMachine = new AIStateMachine();
+
+            stateMachine.AddState(continuousEventSpamState);
+            
+            return stateMachine;
+        }
 
         private AIStateMachine CreateRandomMovementStateMachine(Entity entity)
         {
