@@ -84,6 +84,11 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             return brain;
         }
 
+        //public StateMachineBrain CreateComplexTeleporterBrain(Entity entity, ITargetSelector targetSelector)
+        //{
+        //    return StateMachineBrain();
+        //}
+
         private AIStateMachine CreateContinuousEventStateMachine(Entity entity)
         {
             ContinuousEventSpamState continuousEventSpamState = new ContinuousEventSpamState(entity.StartTeleportationRequest, 3f);

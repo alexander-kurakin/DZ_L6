@@ -68,4 +68,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Teleportation
     {
         public ReactiveVariable<bool> Value;
     }
+
+    public class TeleporterMode : IEntityComponent
+    {
+        public ReactiveVariable<TeleportMode> Value;
+    }
 }

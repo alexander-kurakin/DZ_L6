@@ -162,7 +162,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
                 .AddAreaImpactMask(new LayerMask { value = 1 << LayerMask.NameToLayer("Characters") })
                 .AddAreaImpactCollidersBuffer(new Buffer<Collider>(64))
                 .AddAreaImpactEntitiesBuffer(new Buffer<Entity>(64))
-                .AddDealAreaImpactDamageRequest();
+                .AddDealAreaImpactDamageRequest()
+                .AddTeleporterMode(new ReactiveVariable<TeleportMode>(TeleportMode.RandomInCircle)); 
             
             ICompositeCondition canTeleport = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.IsDead.Value == false))
