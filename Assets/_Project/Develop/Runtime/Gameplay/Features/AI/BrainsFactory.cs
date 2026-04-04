@@ -7,6 +7,7 @@ using Assets._Project.Develop.Runtime.Utilities.Reactive;
 using Assets._Project.Develop.Runtime.Utilities.Timer;
 using System;
 using System.Collections.Generic;
+using Assets._Project.Develop.Runtime.Gameplay.Features.Teleportation;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
@@ -76,6 +77,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
         
         public StateMachineBrain CreateSimpleTeleporterBrain(Entity entity)
         {
+            entity.TeleporterMode.Value = TeleportMode.RandomInCircle;
+            
             AIStateMachine stateMachine = CreateContinuousEventStateMachine(entity);
             StateMachineBrain brain = new StateMachineBrain(stateMachine);
             
@@ -84,10 +87,44 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             return brain;
         }
 
-        //public StateMachineBrain CreateComplexTeleporterBrain(Entity entity, ITargetSelector targetSelector)
-        //{
-        //    return StateMachineBrain();
-        //}
+        public StateMachineBrain CreateComplexTeleporterBrain(Entity entity, ITargetSelector targetSelector)
+        {
+            entity.TeleporterMode.Value = TeleportMode.TowardsCurrentTarget;
+            
+            EmptyState regenerationState = new EmptyState();
+            
+            AIStateMachine teleportationState = CreateContinuousEventStateMachine(entity);
+
+            ReactiveVariable<Entity> currentTarget = entity.CurrentTarget;
+
+            ICompositeCondition fromRegenToTeleportStateCondition = new CompositeCondition()
+                .Add(new FuncCondition(() => currentTarget.Value != null))
+                .Add(new FuncCondition(() => entity.CurrentEnergy.Value >= 0.4f * entity.MaxEnergy.Value));
+
+            ICompositeCondition fromTeleportToRegenStateCondition = new CompositeCondition(LogicOperations.Or)
+                .Add(new FuncCondition(() => currentTarget.Value == null))
+                .Add(new FuncCondition(() => entity.CurrentEnergy.Value < 0.4f * entity.MaxEnergy.Value));
+
+            AIStateMachine behaviour = new AIStateMachine();
+
+            behaviour.AddState(regenerationState);
+            behaviour.AddState(teleportationState);
+
+            behaviour.AddTransition(regenerationState, teleportationState, fromRegenToTeleportStateCondition);
+            behaviour.AddTransition(teleportationState, regenerationState, fromTeleportToRegenStateCondition);
+
+            FindTargetState findTargetState = new FindTargetState(targetSelector, _entitiesLifeContext, entity);
+            AIParallelState parallelState = new AIParallelState(findTargetState, behaviour);
+
+            AIStateMachine rootStateMachine = new AIStateMachine();
+            rootStateMachine.AddState(parallelState);
+
+            StateMachineBrain brain = new StateMachineBrain(rootStateMachine);
+            _brainsContext.SetFor(entity, brain);
+
+            return brain;
+        }
+        
 
         private AIStateMachine CreateContinuousEventStateMachine(Entity entity)
         {
