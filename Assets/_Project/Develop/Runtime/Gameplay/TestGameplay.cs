@@ -29,13 +29,20 @@ namespace Assets._Project.Develop.Runtime.Gameplay
 
         public void Run()
         {
-//            _mainHero = _entitiesFactory.CreateHero(Vector3.zero);
-//            _mainHero.AddCurrentTarget();
-//            _brainsFactory.CreateMainHeroBrain(_mainHero, new NearestDamageableTargetSelector(_mainHero));
-            
-            _teleportator = _entitiesFactory.CreateTeleportator(Vector3.zero + Vector3.right * 15);
-            _brainsFactory.CreateComplexTeleporterBrain(_teleportator, new MinHealthTargetSelector(_teleportator));
-            
+            bool useMainHero = true;
+
+            if (useMainHero)
+            {
+                _mainHero = _entitiesFactory.CreateHero(Vector3.zero);
+                _mainHero.AddCurrentTarget();
+                _brainsFactory.CreateMainHeroBrain(_mainHero, new NearestDamageableTargetSelector(_mainHero));
+            }
+            else
+            {
+                _teleportator = _entitiesFactory.CreateTeleportator(Vector3.zero + Vector3.right * 15);
+                _brainsFactory.CreateComplexTeleporterBrain(_teleportator, new MinHealthTargetSelector(_teleportator));
+            }
+
             _ghost = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
             _brainsFactory.CreateGhostBrain(_ghost);
             _ghost.CurrentHealth.Value = 40f;

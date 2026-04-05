@@ -11,10 +11,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI.States
 
         private float _time;
 
-        public ContinuousEventSpamState(
-            ReactiveEvent triggeredEvent,
-            float cooldownBetweenEventTriggering
-        )
+        public ContinuousEventSpamState(ReactiveEvent triggeredEvent, float cooldownBetweenEventTriggering)
         {
             _triggeredEvent = triggeredEvent;
             _cooldownBetweenEventTriggering = cooldownBetweenEventTriggering;
