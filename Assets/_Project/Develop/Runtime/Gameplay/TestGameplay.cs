@@ -1,4 +1,4 @@
-﻿using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
+using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
@@ -19,6 +19,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         private Entity _mainHero;
 
         private bool _isRunning;
+        private bool _useMainHero = false;
+        private bool _useComplexTeleporter = false;
 
         public void Initialize(DIContainer container)
         {
@@ -29,18 +31,24 @@ namespace Assets._Project.Develop.Runtime.Gameplay
 
         public void Run()
         {
-            bool useMainHero = true;
 
-            if (useMainHero)
+            if (_useMainHero)
             {
                 _mainHero = _entitiesFactory.CreateHero(Vector3.zero);
-                _mainHero.AddCurrentTarget();
-                _brainsFactory.CreateMainHeroBrain(_mainHero, new NearestDamageableTargetSelector(_mainHero));
+                _brainsFactory.CreateMainHeroManualBrain(_mainHero);
             }
             else
             {
                 _teleportator = _entitiesFactory.CreateTeleportator(Vector3.zero + Vector3.right * 15);
-                _brainsFactory.CreateComplexTeleporterBrain(_teleportator, new MinHealthTargetSelector(_teleportator));
+                if (_useComplexTeleporter)
+                {
+                    _brainsFactory.CreateComplexTeleporterBrain(_teleportator,
+                        new MinHealthTargetSelector(_teleportator));
+                }
+                else
+                {
+                    _brainsFactory.CreateSimpleTeleporterBrain(_teleportator);
+                }
             }
 
             _ghost = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
@@ -63,16 +71,14 @@ namespace Assets._Project.Develop.Runtime.Gameplay
             if (_isRunning == false)
                 return;
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                _teleportator.CurrentEnergy.Value = 0;
+            if (!_useMainHero)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                    _teleportator.CurrentEnergy.Value = 0;
 
-            //if (Input.GetKeyDown(KeyCode.T))
-            //    _teleportator.StartTeleportationRequest.Invoke();
-
-            //Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-
-            //_entity.MoveDirection.Value = input;
-            //_entity.RotationDirection.Value = input;
+                if (Input.GetKeyDown(KeyCode.T))
+                    _teleportator.StartTeleportationRequest.Invoke();
+            }
         }
     }
 }

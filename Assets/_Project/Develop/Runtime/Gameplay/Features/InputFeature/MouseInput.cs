@@ -16,5 +16,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
                 return Input.GetAxisRaw("Mouse X");
             }
         }
+        
+        public bool FireButtonPressed => IsEnabled && Input.GetMouseButtonDown(0);
     }
 }

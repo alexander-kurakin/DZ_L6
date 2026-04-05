@@ -4,5 +4,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
     {
         bool IsEnabled { get; set; }
         float HorizontalDelta { get; }
+        bool FireButtonPressed { get; }
     }
 }
