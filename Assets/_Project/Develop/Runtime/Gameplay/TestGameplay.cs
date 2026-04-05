@@ -20,7 +20,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay
 
         private bool _isRunning;
         private bool _useMainHero = false;
-        private bool _useComplexTeleporter = false;
+        private bool _useComplexTeleporter = true;
 
         public void Initialize(DIContainer container)
         {

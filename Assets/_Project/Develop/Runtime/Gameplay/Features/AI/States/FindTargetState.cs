@@ -35,6 +35,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI.States
 
         private void OnCurrentTargetChanged(Entity oldTarget, Entity newTarget)
         {
+            if (newTarget == null || newTarget.InDeathProcess.Value)
+                return;
+            
             if (_stateUser.TryGetTeleporterMode(out ReactiveVariable<TeleportMode> mode))
             {
                 if (mode.Value == TeleportMode.TowardsCurrentTarget)
