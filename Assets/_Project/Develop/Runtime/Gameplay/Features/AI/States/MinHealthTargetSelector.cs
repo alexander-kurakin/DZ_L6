@@ -49,7 +49,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI.States
                     minHPtarget = target;
                 }
             }
-
+            
             return minHPtarget;
         }
     }

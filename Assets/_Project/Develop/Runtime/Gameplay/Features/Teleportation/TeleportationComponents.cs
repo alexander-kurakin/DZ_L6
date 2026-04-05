@@ -73,4 +73,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Teleportation
     {
         public ReactiveVariable<TeleportMode> Value;
     }
+
+    public class TeleportRepulseDistance : IEntityComponent
+    {
+        public ReactiveVariable<float> Value;
+    }
 }

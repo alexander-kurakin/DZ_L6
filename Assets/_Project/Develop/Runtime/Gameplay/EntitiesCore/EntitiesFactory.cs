@@ -1,4 +1,4 @@
-﻿using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Mono;
+using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Mono;
 using Assets._Project.Develop.Runtime.Gameplay.Features.ApplyDamage;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage;
 using Assets._Project.Develop.Runtime.Gameplay.Features.Attack;
@@ -163,7 +163,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
                 .AddAreaImpactCollidersBuffer(new Buffer<Collider>(64))
                 .AddAreaImpactEntitiesBuffer(new Buffer<Entity>(64))
                 .AddDealAreaImpactDamageRequest()
-                .AddTeleporterMode(new ReactiveVariable<TeleportMode>(TeleportMode.RandomInCircle)); 
+                .AddTeleporterMode(new ReactiveVariable<TeleportMode>(TeleportMode.RandomInCircle))
+                .AddCurrentTarget()
+                .AddTeleportRepulseDistance(new ReactiveVariable<float>(2)); 
             
             ICompositeCondition canTeleport = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.IsDead.Value == false))
