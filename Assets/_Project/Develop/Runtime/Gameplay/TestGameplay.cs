@@ -75,9 +75,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                     _teleportator.CurrentEnergy.Value = 0;
-
-                if (Input.GetKeyDown(KeyCode.T))
-                    _teleportator.StartTeleportationRequest.Invoke();
             }
         }
     }
